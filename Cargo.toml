@@ -14,5 +14,5 @@ resolver = "2"
 overflow-checks = true
 
 # Added for Exercise 02.08 
-[profile.dev]
-overflow-checks = false
+# [profile.dev]
+# overflow-checks = false
