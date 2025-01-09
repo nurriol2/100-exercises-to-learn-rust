@@ -7,18 +7,42 @@ struct Ticket {
 impl Ticket {
     // TODO: implement the `new` function.
     //  The following requirements should be met:
+    //
+    //   NOTE: (Problem 1)
     //   - Only `To-Do`, `In Progress`, and `Done` statuses are allowed.
-    //   - The `title` and `description` fields should not be empty.
+    //
+    //   NOTE: (Problem 2) -> `is_empty()`
+    //   - The `title` field should not be empty.
+    //   - The  `description` field should not be empty.
+    //
+    //   NOTE: (Problem 3) -> `len()`
     //   - the `title` should be at most 50 bytes long.
     //   - the `description` should be at most 500 bytes long.
+
+    //  NOTE:
     //  The method should panic if any of the requirements are not met.
     //  You can find the needed panic messages in the tests.
-    //
+
     // You'll have to use what you learned in the previous exercises,
     // as well as some `String` methods. Use the documentation of Rust's standard library
     // to find the most appropriate options -> https://doc.rust-lang.org/std/string/struct.String.html
     fn new(title: String, description: String, status: String) -> Self {
-        todo!();
+        if title.is_empty() {
+            panic!("Title cannot be empty");
+        } else if description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+
+        if title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes");
+        } else if description.len() > 500 {
+            panic!("Description cannot be longer than 500 bytes");
+        }
+
+        if status != "To-Do" && status != "In Progress" && status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
+
         Self {
             title,
             description,
