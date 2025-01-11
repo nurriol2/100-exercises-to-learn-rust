@@ -29,13 +29,15 @@ impl Ticket {
     fn new(title: String, description: String, status: String) -> Self {
         if title.is_empty() {
             panic!("Title cannot be empty");
-        } else if description.is_empty() {
+        }
+        if description.is_empty() {
             panic!("Description cannot be empty");
         }
 
         if title.len() > 50 {
             panic!("Title cannot be longer than 50 bytes");
-        } else if description.len() > 500 {
+        }
+        if description.len() > 500 {
             panic!("Description cannot be longer than 500 bytes");
         }
 
