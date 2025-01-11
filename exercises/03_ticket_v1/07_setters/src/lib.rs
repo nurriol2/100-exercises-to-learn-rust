@@ -11,21 +11,9 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+        validate_len(&title, "Title".into(), 50);
+        validate_len(&description, "Description".into(), 500);
+        validate_status(&status);
 
         Ticket {
             title,
@@ -34,6 +22,7 @@ impl Ticket {
         }
     }
 
+    // Accessors
     pub fn title(&self) -> &String {
         &self.title
     }
@@ -44,6 +33,41 @@ impl Ticket {
 
     pub fn status(&self) -> &String {
         &self.status
+    }
+
+    // Setters
+    pub fn set_title(&mut self, title: String) {
+        validate_len(&title, "Title".into(), 50);
+        self.title = title;
+    }
+
+    pub fn set_description(&mut self, description: String) {
+        validate_len(&description, "Description".into(), 500);
+        self.description = description;
+    }
+
+    pub fn set_status(&mut self, status: String) {
+        validate_status(&status);
+        self.status = status;
+    }
+}
+
+// Validation
+
+/// Check that `target` meets the minimum and maximum length requirements.
+fn validate_len(target: &String, name: String, max_len: usize) {
+    if target.is_empty() {
+        panic!("{} cannot be empty", name);
+    }
+    if target.len() > max_len {
+        panic!("{} cannot be longer than {} bytes", name, max_len);
+    }
+}
+
+/// Check that `status` is one of three valid options.
+fn validate_status(status: &String) {
+    if status != "To-Do" && status != "In Progress" && status != "Done" {
+        panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
     }
 }
 
