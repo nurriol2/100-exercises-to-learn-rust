@@ -8,6 +8,44 @@ enum Status {
     Done,
 }
 
+#[derive(thiserror::Error, Debug)]
+enum ParsingError {
+    #[error("target cannot be used to create valid status")]
+    InvalidStatusTarget,
+}
+
+impl TryFrom<String> for Status {
+    type Error = ParsingError;
+
+    fn try_from(target: String) -> Result<Self, Self::Error> {
+        match target.to_lowercase().as_str() {
+            "todo" => Ok(Status::ToDo),
+            "inprogress" => Ok(Status::InProgress),
+            "done" => Ok(Status::Done),
+            _ => Err(ParsingError::InvalidStatusTarget),
+        }
+    }
+}
+
+impl TryFrom<&str> for Status {
+    type Error = ParsingError;
+
+    fn try_from(target: &str) -> Result<Self, Self::Error> {
+        // NOTE:Is this implementation equivalent to `TryFrom<String>` because
+        // `String` implements `Into<String, str>`?
+        // match target.to_lowercase().as_str() {
+        //     "todo" => Ok(Status::ToDo),
+        //     "inprogress" => Ok(Status::InProgress),
+        //     "done" => Ok(Status::Done),
+        //     _ => Err(ParsingError::InvalidStatusTarget),
+        // }
+
+        // NOTE:Yes! We can take advantage of this fact and simplify
+        // this implementation.
+        target.to_lowercase().try_into()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
